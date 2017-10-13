@@ -1,0 +1,47 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: hello-world-service
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 80
+      name: http
+  selector:
+    app: hello-world
+---
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  name: hello-world-deployment
+spec:
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      initContainers:
+        - name: hello-world-init
+          image: hello-world-init:1
+          command:
+            - "cp"
+            - "-a"
+            - "/html/."
+            - "/site"
+          volumeMounts:
+            - name: static
+              mountPath: /site
+      containers:
+        - name: hello-world
+          image: hello-world-nginx:1
+          ports:
+            - containerPort: 80
+              name: http
+          volumeMounts:
+            - name: static
+              mountPath: /usr/share/nginx/html
+      volumes:
+        - name: static
+          emptyDir: {}
