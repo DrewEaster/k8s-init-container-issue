@@ -5,6 +5,8 @@ I've discovered what appears to be an issue with updating a pod/deployment speci
 
 This project contains the necessary artifacts for recreating the issue using minikube.
 
+I initially ran into this problem on Google Container Engine running Kubernetes v1.7.5.
+
 Steps for recreating the issue using minikube
 ---------------------------------------------
 
